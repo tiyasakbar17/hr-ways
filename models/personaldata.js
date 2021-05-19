@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// define association here
-			PersonalData.belongsTo(models.Karyawan, { as: "alamat", foreignKey: "karyawanId" });
+			PersonalData.belongsTo(models.Karyawan, { as: "karyawan", foreignKey: "karyawanId" });
 		}
 	}
 	PersonalData.init(
@@ -23,11 +23,12 @@ module.exports = (sequelize, DataTypes) => {
 			gaji: DataTypes.STRING,
 		},
 		{
-			sequelize,
-			modelName: "PersonalData",
 			defaultScope: {
 				order: [["createdAt", "DESC"]],
 			},
+			sequelize,
+			modelName: "PersonalData",
+
 			paranoid: true,
 		}
 	);

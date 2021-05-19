@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// define association here
-			Karyawan.hasOne(models.Cabang, { as: "cabang", foreignKey: "cabangId" });
+			Karyawan.belongsTo(models.Cabang, { as: "cabang", foreignKey: "cabangId" });
+			Karyawan.hasOne(models.Alamat, { as: "alamat", foreignKey: "karyawanId" });
 		}
 	}
 	Karyawan.init(
@@ -21,11 +22,12 @@ module.exports = (sequelize, DataTypes) => {
 			cabangId: DataTypes.INTEGER,
 		},
 		{
-			sequelize,
-			modelName: "Karyawan",
 			defaultScope: {
 				order: [["createdAt", "DESC"]],
 			},
+			sequelize,
+			modelName: "Karyawan",
+
 			paranoid: true,
 		}
 	);

@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
 			namaCabang: DataTypes.STRING,
 		},
 		{
-			sequelize,
-			modelName: "Cabang",
 			defaultScope: {
 				order: [["createdAt", "DESC"]],
 			},
+			sequelize,
+			modelName: "Cabang",
 			paranoid: true,
 		}
 	);

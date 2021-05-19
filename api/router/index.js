@@ -14,6 +14,7 @@ router.get("/load", jwtAuth(["cabang"]), Auth.loadData);
 router.get("/full/address", Address.addressList); //** get prov, kab, kec, kel, pos */
 
 //** Cabang */
-router.post("/cabang", jwtAuth(["cabang"]), Cabang.addCabang);
+router.post("/cabang", jwtAuth(["admin"]), Cabang.addCabang);
+router.get("/cabang/all", jwtAuth(["admin"]), Cabang.getAllCabang);
 
 module.exports = router;

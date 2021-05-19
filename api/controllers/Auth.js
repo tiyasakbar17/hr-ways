@@ -6,7 +6,7 @@ const { failedResponse, successResponse } = require("../responses");
 
 module.exports = {
 	addUserCabang: async (req, res) => {
-		const { username, password, cabangId } = req.body;
+		const { username, password } = req.body;
 		try {
 			const schema = joi.object({
 				username: joi.string().min(2).required(),
@@ -33,6 +33,7 @@ module.exports = {
 					const newUserData = {
 						...req.body,
 						password: hashedPassword,
+						role: 'cabang'
 					};
 					const newUser = await User.create(newUserData);
 
@@ -124,9 +125,8 @@ module.exports = {
 			const resultToSend = {
 				username: calledUser.username,
 				role: calledUser.role,
-				token,
 			};
-			successResponse(res, resultToSend, "account", "account data loaded");
+			successResponse(res, resultToSend, "account data loaded");
 		} catch (error) {
 			console.log("something went wrong at loadData======>>>>>>", error);
 			failedResponse(res, "server error", JSON.stringify(error));
