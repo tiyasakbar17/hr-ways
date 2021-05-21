@@ -16,10 +16,14 @@ module.exports = (sequelize, DataTypes) => {
 	Cabang.init(
 		{
 			namaCabang: DataTypes.STRING,
+			status: DataTypes.BOOLEAN,
 		},
 		{
 			defaultScope: {
-				order: [["createdAt", "DESC"]],
+				order: [["namaCabang", "ASC"]],
+				attributes: {
+					exclude: ["updatedAt", "deletedAt"],
+				},
 			},
 			sequelize,
 			modelName: "Cabang",

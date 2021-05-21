@@ -1,7 +1,7 @@
 const { Cabang, sequelize } = require("../../models");
-const jwt = require("jsonwebtoken");
 const joi = require("joi");
 const { failedResponse, successResponse } = require("../responses");
+const { Op } = require("sequelize");
 
 module.exports = {
 	addCabang: async (req, res) => {
@@ -25,7 +25,7 @@ module.exports = {
 				const details = error.details.map((detail) => detail.message.split('"').join("").split("\\").join(""));
 				return failedResponse(res, error.details[0].message.split('"').join("").split("\\").join(""), details);
 			}
-			const newCabang = await Cabang.create({ namaCabang: namaCabang.toLowerCase() });
+			const newCabang = await Cabang.create({ namaCabang: namaCabang.toLowerCase(), status: true });
 			if (!newCabang) {
 				return failedResponse(res, "Failed to add cabang, please try again");
 			}
@@ -38,24 +38,118 @@ module.exports = {
 
 	getAllCabang: async (req, res) => {
 		try {
-			const { page, keyword } = req.query;
-			const allCabang = await Cabang.findAndCountAll({
-				where: keyword
-					? {
-							namaCabang: sequelize.where(sequelize.fn("LOWER", sequelize.col("namaCabang")), "LIKE", "%" + keyword.toLowerCase() + "%"),
-					  }
-					: {},
-				limit: 10,
-				offset: (parseInt(page || 1) - 1) * 10,
-			});
-			const resultToSend = {
-				totalPage: Math.ceil(allCabang.count / 10),
-				pageNow: parseInt(page || 1),
-				data: allCabang.rows,
-			};
-			successResponse(res, resultToSend, "Cabang loaded");
+			const { page, keyword, restore } = req.query;
+			const conditions = page
+				? {
+						where: restore
+							? keyword
+								? {
+										namaCabang: sequelize.where(sequelize.fn("LOWER", sequelize.col("namaCabang")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+										deletedAt: { [Op.ne]: null },
+								  }
+								: { deletedAt: { [Op.ne]: null } }
+							: keyword
+							? {
+									namaCabang: sequelize.where(sequelize.fn("LOWER", sequelize.col("namaCabang")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+							  }
+							: {},
+						paranoid: restore ? false : true,
+						limit: 10,
+						offset: (parseInt(page || 1) - 1) * 10,
+				  }
+				: {
+						where: keyword
+							? {
+									namaCabang: sequelize.where(sequelize.fn("LOWER", sequelize.col("namaCabang")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+							  }
+							: {},
+				  };
+			const allCabang = await Cabang.findAndCountAll(conditions);
+
+			if (page) {
+				const resultToSend = {
+					totalPage: Math.ceil(allCabang.count / 10),
+					pageNow: parseInt(page || 1),
+					data: allCabang.rows,
+				};
+				return successResponse(res, resultToSend, "Cabang loaded");
+			}
+			return successResponse(res, allCabang.rows, "List Cabang");
 		} catch (error) {
 			console.log("Something went wrong at getAllCabang =====>>>>>", error);
+			failedResponse(res, "server error", JSON.stringify(error));
+		}
+	},
+
+	editCabang: async (req, res) => {
+		try {
+			const { id, ...restData } = req.body; //** restData : namaCabang, status */
+			const available = await Cabang.findOne({
+				where: {
+					id,
+				},
+			});
+			if (available === null) {
+				return failedResponse(res, `Cabang with id ${id} is not found`);
+			}
+			const schema = joi.object({
+				namaCabang: joi.string(),
+				status: joi.boolean(),
+			});
+
+			const { error } = schema.validate(restData, { abortEarly: false });
+
+			if (error) {
+				const details = error.details.map((detail) => detail.message.split('"').join("").split("\\").join(""));
+				return failedResponse(res, error.details[0].message.split('"').join("").split("\\").join(""), details);
+			}
+			await Cabang.update(restData, {
+				where: {
+					id,
+				},
+			});
+			const newData = await Cabang.findOne({ where: { id } });
+			successResponse(res, newData, "Cabang Updated");
+		} catch (error) {
+			console.log("Something went wrong at editCabang =====>>>>>", error);
+			failedResponse(res, "server error", JSON.stringify(error));
+		}
+	},
+
+	deleteCabang: async (req, res) => {
+		try {
+			const { id } = req.query;
+			const available = await Cabang.findOne({
+				where: {
+					id,
+				},
+			});
+			if (available === null) {
+				return failedResponse(res, `Cabang with id ${id} is not found`);
+			}
+			await Cabang.destroy({ where: { id } });
+			successResponse(res, id, `Cabang with id ${id} is deleted`);
+		} catch (error) {
+			console.log("Something went wrong at deleteCabang =====>>>>>", error);
+			failedResponse(res, "server error", JSON.stringify(error));
+		}
+	},
+
+	restoreCabang: async (req, res) => {
+		try {
+			const { id } = req.query;
+			await Cabang.restore({ where: { id } });
+			const available = await Cabang.findOne({
+				where: {
+					id,
+				},
+			});
+			if (available === null) {
+				return failedResponse(res, `Cabang with id ${id} is not found`);
+			}
+			successResponse(res, available, `Cabang with id ${id} is restored`);
+		} catch (error) {
+			console.log("Something went wrong at restoreCabang =====>>>>>", error);
 			failedResponse(res, "server error", JSON.stringify(error));
 		}
 	},

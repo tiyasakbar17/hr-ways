@@ -5,11 +5,13 @@ module.exports = {
 		return queryInterface.bulkInsert("Cabangs", [
 			{
 				namaCabang: 'pusat',
+				status: true,
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
 			{
 				namaCabang: 'lampung',
+				status: true,
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},

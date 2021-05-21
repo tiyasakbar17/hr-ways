@@ -1,12 +1,13 @@
-const { User } = require("../../models");
+const { User, Cabang, sequelize } = require("../../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const joi = require("joi");
 const { failedResponse, successResponse } = require("../responses");
+const { Op } = require("sequelize");
 
 module.exports = {
 	addUserCabang: async (req, res) => {
-		const { username, password } = req.body;
+		const { username, password, cabangId } = req.body;
 		try {
 			const schema = joi.object({
 				username: joi.string().min(2).required(),
@@ -26,40 +27,121 @@ module.exports = {
 					},
 				});
 
-				if (checkUsername) {
-					failedResponse(res, "Use Another Username");
-				} else {
-					const hashedPassword = await bcrypt.hash(password, 10);
-					const newUserData = {
-						...req.body,
-						password: hashedPassword,
-						role: 'cabang'
-					};
-					const newUser = await User.create(newUserData);
-
-					const tokenPayload = {
-						id: newUser.id,
-						username: newUser.username,
-						role: newUser.role,
-					};
-
-					const token = await jwt.sign(tokenPayload, process.env.SECRET_KEY, {
-						expiresIn: 86400,
-					});
-
-					const showResult = {
-						username: newUser.username,
-						role: newUser.role,
-						token,
-					};
-					return successResponse(res, showResult, "Account Created", 201);
+				if (checkUsername !== null) {
+					return failedResponse(res, "Use Another Username");
 				}
+
+				const checkCabang = await Cabang.findOne({ where: { id: cabangId } });
+				if (checkCabang === null) {
+					return failedResponse(res, `Cabang with id ${cabangId} is not found`);
+				}
+
+				//**-----------------inserting data------------------ */
+				const hashedPassword = await bcrypt.hash(password, 10);
+				const newUserData = {
+					...req.body,
+					password: hashedPassword,
+					role: "cabang",
+				};
+				const newUser = await User.create(newUserData);
+
+				const calledNewUser = await User.findOne({
+					where: { id: newUser.id },
+					include: {
+						model: Cabang,
+						as: "cabang",
+						attributes: {
+							exclude: ["createdAt", "updatedAt", "deletedAt"],
+						},
+					},
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "deletedAt", "password"],
+					},
+				});
+				successResponse(res, calledNewUser, "Account Created", 201);
 			}
 		} catch (error) {
 			console.log("something went wrong at addUserCabang======>>>>>>", error);
 			failedResponse(res, "server error", JSON.stringify(error));
 		}
 	},
+
+	getUserCabang: async (req, res) => {
+		try {
+			const { page, keyword, restore } = req.query;
+			const allUser = await User.findAndCountAll({
+				where: restore
+					? keyword
+						? {
+								username: sequelize.where(sequelize.fn("LOWER", sequelize.col("username")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+								deletedAt: { [Op.ne]: null },
+						  }
+						: { deletedAt: { [Op.ne]: null } }
+					: keyword
+					? {
+							username: sequelize.where(sequelize.fn("LOWER", sequelize.col("username")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+					  }
+					: {},
+				attributes: {
+					exclude: ["password"],
+				},
+				paranoid: restore ? false : true,
+				limit: 10,
+				offset: (parseInt(page || 1) - 1) * 10,
+			});
+			const resultToSend = {
+				totalPage: Math.ceil(allUser.count / 10),
+				pageNow: parseInt(page || 1),
+				data: allUser.rows,
+			};
+			return successResponse(res, resultToSend, "Users loaded");
+		} catch (error) {
+			console.log("something went wrong at getUserCabang======>>>>>>", error);
+			failedResponse(res, "server error", JSON.stringify(error));
+		}
+	},
+
+	deleteUserCabang: async (req, res) => {
+		try {
+			const { id } = req.query;
+			const available = await User.findOne({
+				where: {
+					id,
+				},
+			});
+			if (available === null) {
+				return failedResponse(res, `User with id ${id} is not found`);
+			}
+			await User.destroy({ where: { id } });
+			successResponse(res, id, `User with id ${id} is deleted`);
+		} catch (error) {
+			console.log("Something went wrong at deleteUserCabang =====>>>>>", error);
+			failedResponse(res, "server error", JSON.stringify(error));
+		}
+	},
+
+	restoreUserCabang: async (req, res) => {
+		try {
+			const { id } = req.query;
+			await User.restore({ where: { id } });
+			const available = await User.findOne({
+				where: {
+					id,
+				},
+				attributes: {
+					exclude: ["password"],
+				},
+			});
+			if (available === null) {
+				return failedResponse(res, `User with id ${id} is not found`);
+			}
+			successResponse(res, available, `User with id ${id} is restored`);
+		} catch (error) {
+			console.log("Something went wrong at restoreUserCabang =====>>>>>", error);
+			failedResponse(res, "server error", JSON.stringify(error));
+		}
+	},
+
 	login: async (req, res) => {
 		const { username, password } = req.body;
 		try {
@@ -114,6 +196,7 @@ module.exports = {
 			failedResponse(res, "server error", JSON.stringify(error));
 		}
 	},
+
 	loadData: async (req, res) => {
 		try {
 			const calledUser = await User.findOne({

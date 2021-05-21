@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// define association here
-			Alamat.belongsTo(models.Karyawan, {as: 'karyawans', foreignKey:'karyawanId'})
+			Alamat.belongsTo(models.Karyawan, { as: "karyawan", foreignKey: "karyawanId" });
 		}
 	}
 	Alamat.init(
@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			defaultScope: {
 				order: [["createdAt", "DESC"]],
+				attributes: {
+					exclude: ["updatedAt", "deletedAt", "karyawanId"],
+				},
 			},
 			sequelize,
 			modelName: "Alamat",

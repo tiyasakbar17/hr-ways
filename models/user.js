@@ -22,6 +22,15 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			defaultScope: {
 				order: [["createdAt", "DESC"]],
+				include: [
+					{
+						model: sequelize.models.Cabang,
+						as: "cabang",
+					},
+				],
+				attributes: {
+					exclude: ["updatedAt", "deletedAt", 'cabangId'],
+				},
 			},
 			sequelize,
 			modelName: "User",

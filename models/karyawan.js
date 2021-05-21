@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 			Karyawan.belongsTo(models.Cabang, { as: "cabang", foreignKey: "cabangId" });
 			Karyawan.hasOne(models.Alamat, { as: "alamat", foreignKey: "karyawanId" });
+			Karyawan.hasOne(models.PersonalData, { as: "personalData", foreignKey: "karyawanId" });
 		}
 	}
 	Karyawan.init(
@@ -24,10 +25,22 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			defaultScope: {
 				order: [["createdAt", "DESC"]],
+				include: [
+					{
+						model: sequelize.models.Cabang,
+						as: "cabang",
+					},
+					{
+						model: sequelize.models.Alamat,
+						as: "alamat",
+					},
+				],
+				attributes: {
+					exclude: ["updatedAt", "deletedAt", "cabangId"],
+				},
 			},
 			sequelize,
 			modelName: "Karyawan",
-
 			paranoid: true,
 		}
 	);
