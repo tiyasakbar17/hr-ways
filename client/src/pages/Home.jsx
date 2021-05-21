@@ -1,34 +1,59 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import Card from "../components/Home/Card";
-import Carousel from "../components/Home/Carousel";
-import { getPosts } from "../redux/actions/Posts";
+import { Redirect } from "react-router";
+import Login from "../components/Auth/Login";
+import Loading from "../components/PopUps/Loading";
+import PopUps from "../components/PopUps/PopUps";
+import useWindowDimensions from "../components/ScreenSize";
 
-const Home = ({ Posts: { posts }, getPosts }) => {
-	useEffect(() => {
-		getPosts();
-	}, []);
+function Home({ Auth: { isLogin, userData }, PopUpState: { isPoped, loadingComp } }) {
+	const { width, height } = useWindowDimensions();
+	const innitialValue = {
+		login: false,
+	};
 
+	const [state, setState] = useState(innitialValue);
+
+	const showLogin = () => {
+		setState((prevState) => ({ ...prevState, login: !prevState.login }));
+	};
 	return (
-		<div className="container mb-5">
-			<div className="showBox mb-4">
-				<Carousel thumbnail={posts.slice(0, 4)} />
+		<>
+			{isLogin ? userData.role === "admin" ? <Redirect to="/admin" /> : <Redirect to="/user" /> : null}
+			{isPoped ? <PopUps /> : null}
+			{loadingComp ? <Loading /> : null}
+			{state.login ? <Login onClick={showLogin} /> : null}
+			<div className="home-container" style={{ width, height }}>
+				<div className="wrapper" style={{ width: 0.9 * width, height: 0.9 * height }}>
+					<div className="main-picture">
+						<img src="https://picsum.photos/800/550" alt="gambar awal" className="main-image" />
+					</div>
+					<div className="login-side">
+						<div className="text-center">
+							<h3>Selamat Datang</h3>
+						</div>
+						<div class="shadow p-3 mb-5 bg-white rounded">
+							<div class="card text-white bg-primer mb-3 main-item pointer">
+								<div class="card-header text-center" onClick={showLogin}>
+									Login
+								</div>
+							</div>
+							<div class="card text-white bg-second mb-3 main-item pointer">
+								<div class="card-header text-center">Periksa Data</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div style={{ width: "100%", borderBottom: "1px gray solid" }} className="mt-5">
-				<h1>News</h1>
-			</div>
-			<div className="mt-2">
-				{posts.map((item, i) => (
-					<Card key={i} data={item} />
-				))}
-			</div>
-		</div>
+		</>
 	);
-};
+}
+
 const mapStateToProps = (state) => ({
-	Posts: state.Posts,
+	Auth: state.Auth,
+	PopUpState: state.PopUp,
 });
 
-const mapDispatchToProps = { getPosts };
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

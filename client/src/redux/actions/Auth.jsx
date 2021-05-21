@@ -1,6 +1,5 @@
 import Axios from "axios";
-import { closeLoading, showLoading, showPopUp, showProgress } from "./PopUp";
-import { getPost } from "./Posts";
+import { closeLoading, showLoading, showPopUp } from "./PopUp";
 import SetAuthToken from "./setAuthToken";
 
 const configJson = {
@@ -8,7 +7,6 @@ const configJson = {
 		"Content-type": "application/json",
 	},
 };
-export const baseUrl = "https://tiyas-my-gazine.herokuapp.com/api/v1";
 
 export const loadData = () => async (dispatch) => {
 	dispatch(showLoading());
@@ -17,14 +15,13 @@ export const loadData = () => async (dispatch) => {
 	}
 
 	try {
-		const result = await Axios.get(`${baseUrl}/load`, configJson);
+		const result = await Axios.get(`/load`, configJson);
 		dispatch({
 			type: "LOAD_DATA",
-			payload: result.data.account,
+			payload: result.data.data,
 		});
 		dispatch(closeLoading());
 	} catch (error) {
-		console.log(error.response);
 		dispatch(closeLoading());
 		dispatch({
 			type: "AUTH_ERROR",
@@ -34,39 +31,15 @@ export const loadData = () => async (dispatch) => {
 export const userLogin = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		const results = await Axios.post(`${baseUrl}/login`, data, configJson);
+		console.log(data);
+		const results = await Axios.post(`/login`, data, configJson);
 		dispatch({
 			type: "LOGIN",
-			payload: results.data.account,
+			payload: results.data.data,
 		});
-		dispatch(loadData());
+		dispatch(closeLoading());
 	} catch (error) {
 		dispatch(closeLoading());
-		dispatch(showPopUp(error.response.data.message));
-	}
-};
-export const userRegister = (data) => async (dispatch) => {
-	try {
-		dispatch(showLoading());
-		const results = await Axios.post(`${baseUrl}/register`, data, configJson);
-		dispatch({
-			type: "REGISTER",
-			payload: results.data.data.user,
-		});
-		dispatch(loadData());
-	} catch (error) {
-		dispatch(closeLoading());
-		dispatch(showPopUp(error.response.data.message));
-	}
-};
-export const bookmark = (data) => async (dispatch) => {
-	try {
-		dispatch(showLoading());
-		const result = await Axios.post(`${baseUrl}/bookmark/${data}`);
-		dispatch(closeLoading());
-		dispatch(getPost(data));
-		dispatch(showPopUp(result.data.message));
-	} catch (error) {
 		dispatch(showPopUp(error.response.data.message));
 	}
 };

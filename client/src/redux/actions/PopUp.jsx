@@ -18,9 +18,3 @@ export const closeLoading = () => (dispatch) => {
         type: "CLOSE_LOADING",
     });
 };
-export const showProgress = (data) => (dispatch) => {
-    dispatch({
-        type: "OPEN_PROGRESS",
-        payload: data,
-    });
-};

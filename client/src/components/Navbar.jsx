@@ -1,24 +1,14 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { logout } from "../redux/actions/Auth";
 import Login from "./Auth/Login";
-import Register from "./Auth/Register";
 import Loading from "./PopUps/Loading";
 import PopUps from "./PopUps/PopUps";
-import ProgressBar from "./PopUps/ProgressBar";
 
-const Navbar = ({
-	Auth: { isLogin, userData },
-	PopUpState: {
-		isPoped,
-		progress: { isShown },
-		loadingComp,
-	},
-	logout,
-}) => {
+const Navbar = ({ Auth: { isLogin, userData }, PopUpState: { isPoped, loadingComp }, logout }) => {
 	const innitialValue = {
 		login: false,
-		register: false,
 	};
 
 	const [state, setState] = useState(innitialValue);
@@ -26,70 +16,52 @@ const Navbar = ({
 	const showLogin = () => {
 		setState((prevState) => ({ ...prevState, login: !prevState.login }));
 	};
-	const showRegister = () => {
-		setState((prevState) => ({ ...prevState, register: !prevState.register }));
-	};
-	const changeShow = () => {
-		setState((prevState) => ({ login: !prevState.login, register: !prevState.register }));
-	};
-	return (
+	return isLogin ? (
 		<>
 			{isPoped ? <PopUps /> : null}
-			{isShown ? <ProgressBar /> : null}
 			{loadingComp ? <Loading /> : null}
-			{state.login ? <Login onClick={showLogin} changeShow={changeShow} /> : null}
-			{state.register ? <Register onClick={showRegister} changeShow={changeShow} /> : null}
-			<div className="container">
-				<nav className="navbar navbar-expand-lg navbar-light bg-light">
-					<a className="navbar-brand pointer" href="/">
-						My-Gazine
-					</a>
-					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span className="navbar-toggler-icon"></span>
-					</button>
-					<div className="collapse navbar-collapse" id="navbarSupportedContent">
-						{isLogin ? (
+			{state.login ? <Login onClick={showLogin} /> : null}
+			<div className="bg-primer">
+				<div className="custom-navbar">
+					<nav className="navbar navbar-expand-lg navbar-dark bg-primer">
+						<Link to="/">
+							<span className="navbar-brand pointer text-white">HR-Ways</span>
+						</Link>
+						<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{ color: "white" }}>
+							<span className="navbar-toggler-icon" style={{ color: "white" }}></span>
+						</button>
+						<div className="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul className="navbar-nav mr-auto">
-								<li className="nav-item">
-									<a className="nav-link pointer " href="/add-post">
-										Add Post
-									</a>
-								</li>
-								<li className="nav-item">
-									<a className="nav-link pointer " href="/saved-post">
-										Saved Posts
-									</a>
-								</li>
+								{userData.role === "admin" ? (
+									<>
+										<Link to="/cabang">
+											<li className="nav-item">
+												<span className="nav-link pointer text-white">Cabang</span>
+											</li>
+										</Link>
+										<Link to="/admin/user">
+											<li className="nav-item">
+												<span className="nav-link pointer text-white">HR User</span>
+											</li>
+										</Link>
+									</>
+								) : null}
 							</ul>
-						) : (
-							<ul className="navbar-nav mr-auto"></ul>
-						)}
 
-						<form className="form-inline my-2 my-lg-0">
-							<span>
-								Hello {isLogin ? userData.name : "Guest"},{" "}
-								{isLogin ? (
+							<form className="form-inline my-2 my-lg-0">
+								<span>
+									Hello {isLogin ? userData.username : "Guest"},{" "}
 									<span className="pointer" onClick={logout}>
 										logout
 									</span>
-								) : (
-									<>
-										<span className="pointer" onClick={showLogin}>
-											login
-										</span>
-										/{" "}
-										<span className="pointer" onClick={showRegister}>
-											register
-										</span>
-									</>
-								)}
-							</span>
-						</form>
-					</div>
-				</nav>
+								</span>
+							</form>
+						</div>
+					</nav>
+				</div>
 			</div>
 		</>
-	);
+	) : null;
 };
 const mapStateToProps = (state) => ({
 	Auth: state.Auth,

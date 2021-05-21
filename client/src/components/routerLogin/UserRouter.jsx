@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 
-const LoginRoute = ({ component: Component, Auth, ...rest }) => {
+const LoginRoute = ({ component: Component, Auth, role, ...rest }) => {
 	if (Auth.loading) {
 		return <div className=""></div>;
 	} else {
-		return <Route {...rest} render={(props) => (Auth.isLogin ? <Component {...props} /> : <Redirect to="/" />)} />;
+		return <Route {...rest} render={(props) => (Auth.isLogin && (role.includes(Auth.userData.role) || Auth.userData.role === "admin") ? <Component {...props} /> : <Redirect to="/" />)} />;
 	}
 };
 

@@ -2,10 +2,6 @@ const innitialState = {
     isPoped: false,
     message: "",
     loadingComp: false,
-    progress: {
-        isShown: false,
-        percentage: 0,
-    },
 };
 
 const PopUp = (state = innitialState, action) => {
@@ -18,11 +14,6 @@ const PopUp = (state = innitialState, action) => {
                 message: payload,
                 progress: { isShown: false, percentage: 0 },
                 loadingComp: false,
-            };
-        case "OPEN_PROGRESS":
-            return {
-                ...state,
-                progress: { isShown: true, percentage: payload },
             };
         case "OPEN_LOADING":
             return {

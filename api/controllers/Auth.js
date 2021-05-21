@@ -161,10 +161,14 @@ module.exports = {
 					username,
 				},
 			});
+			if (calledUser===null) {
+				return failedResponse(res, "Check your username");
+			}
+
 			const validatingPassword = await bcrypt.compare(password, calledUser.password);
 
-			if (!calledUser || !validatingPassword) {
-				return failedResponse(res, "Check your username or password");
+			if (!validatingPassword) {
+				return failedResponse(res, "Check your password");
 			} else {
 				const userId = {
 					id: calledUser.id,

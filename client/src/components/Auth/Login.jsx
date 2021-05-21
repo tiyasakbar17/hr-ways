@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { userLogin } from "../../redux/actions/Auth";
 
-function Login({ onClick, userLogin, changeShow }) {
+function Login({ onClick, userLogin }) {
 	const innitialValue = {
-		email: "",
+		username: "",
 		password: "",
 	};
 
@@ -35,23 +35,15 @@ function Login({ onClick, userLogin, changeShow }) {
 				<div className="formContainer">
 					<form onSubmit={submitHandler}>
 						<div className="mb-1">
-							<input type="email" className="form-control" name="email" value={state.email} placeholder="Email" onChange={changeHandler} required />
+							<input type="username" className="form-control" name="username" value={state.username} placeholder="Username" onChange={changeHandler} required />
 						</div>
 						<div className="mb-1">
 							<input type="password" className="form-control" name="password" value={state.password} placeholder="Password" onChange={changeHandler} required />
 						</div>
 						<div className="mb-1">
-							<button type="submit" className="btn btn-success">
+							<button type="submit" className="btn bg-second">
 								Login
 							</button>
-						</div>
-						<div className="modalInput">
-							<span>
-								Dont Have an account ?{" "}
-								<span onClick={changeShow} className="pointer">
-									<strong>Click Here</strong>
-								</span>
-							</span>
 						</div>
 					</form>
 				</div>

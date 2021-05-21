@@ -1,0 +1,67 @@
+$primary: #192a56;
+$secondary: #fbc531;
+$third: #f5f6fa;
+$fourth: #334ead;
+$success: #44bd32;
+$danger: #e84118;
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap");
+
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
+
+.custom-body {
+	background-color: $third;
+}
+
+.bg-primer {
+	background-color: $primary;
+	color: $third;
+}
+.bg-second {
+	background-color: $secondary;
+	color: $third;
+}
+
+.hover-primary {
+	transition: 0.3s;
+	&:hover {
+		background-color: $primary;
+		color: $third;
+	}
+}
+
+// --------------------------- Start --------------------- //
+
+.home-container {
+  display: grid;
+  place-content: center center;
+	.wrapper {
+		display: grid;
+		grid-template-areas: "main-picture login-side";
+		grid-template-columns: 3fr 1fr;
+
+		.main-picture {
+			grid-area: main-picture;
+			display: grid;
+			place-content: center center;
+      .main-image{
+        border-radius: 10px;
+        width: 90%;
+        margin: auto;
+      }
+		}
+		.login-side {
+			grid-area: login-side;
+			display: grid;
+			place-content: center center;
+      .main-item{
+        width: 100%;
+      }
+		}
+	}
+}

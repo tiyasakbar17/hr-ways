@@ -1,8 +1,6 @@
 const innitialState = {
 	isLogin: false,
 	userData: null,
-	token: null,
-	loading: true,
 	user: null,
 };
 
@@ -14,40 +12,26 @@ const Auth = (state = innitialState, action) => {
 				...state,
 				userData: payload,
 				isLogin: true,
-				loading: false,
 			};
 		}
 
 		case "LOGIN":
-			localStorage.setItem("token", payload.token);
+			const { token, ...restData } = payload;
+			localStorage.setItem("token", token);
 			return {
 				...state,
-				token: payload.token,
-			};
-
-		case "REGISTER":
-			localStorage.setItem("token", payload);
-			return {
-				...state,
-				token: payload,
-			};
-
-		case "GET_USER":
-			return {
-				...state,
-				user: payload,
+				userData: restData,
+				isLogin: true,
 			};
 
 		case "LOGOUT":
 			localStorage.removeItem("token");
 			return {
 				...innitialState,
-				loading: false,
 			};
 		case "AUTH_ERROR":
 			return {
 				...innitialState,
-				loading: false,
 			};
 		default:
 			return state;
