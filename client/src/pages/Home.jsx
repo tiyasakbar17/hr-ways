@@ -32,14 +32,14 @@ function Home({ Auth: { isLogin, userData }, PopUpState: { isPoped, loadingComp 
 						<div className="text-center">
 							<h3>Selamat Datang</h3>
 						</div>
-						<div class="shadow p-3 mb-5 bg-white rounded">
-							<div class="card text-white bg-primer mb-3 main-item pointer">
-								<div class="card-header text-center" onClick={showLogin}>
+						<div className="shadow p-3 mb-5 bg-white rounded">
+							<div className="card text-white bg-primer mb-3 main-item pointer">
+								<div className="card-header text-center" onClick={showLogin}>
 									Login
 								</div>
 							</div>
-							<div class="card text-white bg-second mb-3 main-item pointer">
-								<div class="card-header text-center">Periksa Data</div>
+							<div className="card text-white bg-second mb-3 main-item pointer">
+								<div className="card-header text-center">Periksa Data</div>
 							</div>
 						</div>
 					</div>

@@ -34,7 +34,7 @@ const Navbar = ({ Auth: { isLogin, userData }, PopUpState: { isPoped, loadingCom
 							<ul className="navbar-nav mr-auto">
 								{userData.role === "admin" ? (
 									<>
-										<Link to="/cabang">
+										<Link to="/">
 											<li className="nav-item">
 												<span className="nav-link pointer text-white">Cabang</span>
 											</li>
