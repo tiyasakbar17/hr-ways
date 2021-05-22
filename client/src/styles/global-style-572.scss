@@ -45,9 +45,16 @@ $danger: #e84118;
 			"form-switch register-new";
 	}
 	.custom-table{
-		font-size: 12px;
+		font-size: 13px;
 	}
-	.custom-tablew{
-		font-size: 8px;
+	.custom-table2{
+		font-size: 10px;
+	}
+	.karyawan-action{
+		flex-direction: column;
+		.item-ml-2{
+			margin-left: 0px;
+			margin-top: 2px;
+		}
 	}
 }

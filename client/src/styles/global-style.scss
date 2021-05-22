@@ -147,3 +147,9 @@ $danger: #e84118;
 .action-button {
 	display: inline;
 }
+.karyawan-action{
+	flex-direction: row;
+	.item-ml-2{
+		margin-left: 3px;
+	}
+}
