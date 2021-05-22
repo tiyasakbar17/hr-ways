@@ -15,7 +15,7 @@ export const loadData = () => async (dispatch) => {
 	}
 
 	try {
-		const result = await Axios.get(`/load`, configJson);
+		const result = await Axios.get(`/api/v1/load`, configJson);
 		dispatch({
 			type: "LOAD_DATA",
 			payload: result.data.data,
@@ -31,7 +31,7 @@ export const loadData = () => async (dispatch) => {
 export const userLogin = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		const results = await Axios.post(`/login`, data, configJson);
+		const results = await Axios.post(`/api/v1/login`, data, configJson);
 		SetAuthToken(results.data.data.token);
 		dispatch({
 			type: "LOGIN",

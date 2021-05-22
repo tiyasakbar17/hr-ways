@@ -12,7 +12,7 @@ export const getKaryawan =
 	async (dispatch) => {
 		try {
 			dispatch(showLoading());
-			const results = await Axios.get(`/karyawan/all?id=${id ? id : ""}page=${page}&keyword=${keyword}&restore=${restore ? restore : ""}`, configJson);
+			const results = await Axios.get(`/api/v1/karyawan/all?id=${id ? id : ""}page=${page}&keyword=${keyword}&restore=${restore ? restore : ""}`, configJson);
 			dispatch({
 				type: "GET_KARYAWAN",
 				payload: results.data.data,
@@ -30,7 +30,7 @@ export const deleteKaryawan = (id, keyword) => async (dispatch, getState) => {
 	try {
 		const { Karyawan } = getState();
 		dispatch(showLoading());
-		const results = await Axios.delete(`/karyawan/delete?id=${id}`, configJson);
+		const results = await Axios.delete(`/api/v1/karyawan/delete?id=${id}`, configJson);
 		dispatch(getKaryawan({ page: Karyawan.pageNow, keyword, restore: "" }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
@@ -44,7 +44,7 @@ export const restoreKaryawan = (id, keyword) => async (dispatch, getState) => {
 	try {
 		const { Karyawan } = getState();
 		dispatch(showLoading());
-		const results = await Axios.patch(`/karyawan/restore?id=${id}`, configJson);
+		const results = await Axios.patch(`/api/v1/karyawan/restore?id=${id}`, configJson);
 		dispatch(getKaryawan({ page: Karyawan.pageNow, keyword, restore: true }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
@@ -57,7 +57,7 @@ export const restoreKaryawan = (id, keyword) => async (dispatch, getState) => {
 export const addKaryawan = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		const results = await Axios.post(`/karyawan/add`, data, configJson);
+		const results = await Axios.post(`/api/v1/karyawan/add`, data, configJson);
 		dispatch(getKaryawan({ page: 1, restore: "", keyword: "" }));
 		dispatch(showPopUp(results.data.message));
 	} catch (error) {
@@ -69,7 +69,7 @@ export const addKaryawan = (data) => async (dispatch) => {
 export const editKaryawan = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		const results = await Axios.patch(`/karyawan/edit`, data, configJson);
+		const results = await Axios.patch(`/api/v1/karyawan/edit`, data, configJson);
 		dispatch({
 			type: "EDIT_KARYAWAN",
 			payload: results.data.data,
@@ -86,7 +86,7 @@ export const getAddress =
 	async (dispatch) => {
 		try {
 			dispatch(showLoading());
-			const results = await Axios.get(`/full/address?provinsi=${provinsi}&kabupaten=${kabupaten}&kecamatan=${kecamatan}`, configJson);
+			const results = await Axios.get(`/api/v1/full/address?provinsi=${provinsi}&kabupaten=${kabupaten}&kecamatan=${kecamatan}`, configJson);
 			dispatch({
 				type: "GET_ADDRESS",
 				payload: {

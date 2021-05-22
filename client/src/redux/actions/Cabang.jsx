@@ -12,7 +12,7 @@ export const getCabang =
 	async (dispatch) => {
 		try {
 			dispatch(showLoading());
-			const results = await Axios.get(`/cabang/all?page=${page}&keyword=${keyword}&restore=${restore}`, configJson);
+			const results = await Axios.get(`/api/v1/cabang/all?page=${page}&keyword=${keyword}&restore=${restore}`, configJson);
 			const { data } = results.data.data;
 			if (data === undefined) {
 				dispatch({
@@ -36,7 +36,7 @@ export const deleteCabang = (id, keyword) => async (dispatch, getState) => {
 	try {
 		const { Cabang } = getState();
 		dispatch(showLoading());
-		const results = await Axios.delete(`/cabang/delete?id=${id}`, configJson);
+		const results = await Axios.delete(`/api/v1/cabang/delete?id=${id}`, configJson);
 		dispatch(getCabang({ page: Cabang.pageNow, keyword, restore: "" }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
@@ -50,7 +50,7 @@ export const restoreCabang = (id, keyword) => async (dispatch, getState) => {
 	try {
 		const { Cabang } = getState();
 		dispatch(showLoading());
-		const results = await Axios.patch(`/cabang/restore?id=${id}`, configJson);
+		const results = await Axios.patch(`/api/v1/cabang/restore?id=${id}`, configJson);
 		dispatch(getCabang({ page: Cabang.pageNow, keyword, restore: true }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
@@ -63,7 +63,7 @@ export const restoreCabang = (id, keyword) => async (dispatch, getState) => {
 export const addCabang = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		const results = await Axios.post(`/cabang/add`, data, configJson);
+		const results = await Axios.post(`/api/v1/cabang/add`, data, configJson);
 		dispatch(getCabang({ page: 1, restore: "", keyword: "" }));
 		dispatch(showPopUp(results.data.message));
 	} catch (error) {
@@ -75,7 +75,7 @@ export const addCabang = (data) => async (dispatch) => {
 export const editCabang = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		const results = await Axios.patch(`/cabang/edit`, data, configJson);
+		const results = await Axios.patch(`/api/v1/cabang/edit`, data, configJson);
 		dispatch({
 			type: "EDIT_CABANG",
 			payload: results.data.data,
