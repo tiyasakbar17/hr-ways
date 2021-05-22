@@ -45,7 +45,7 @@ module.exports = {
 				}),
 				calledCabang = await Cabang.findOne({
 					where: {
-						id: calledUser.cabangId,
+						id: calledUser.cabang.id,
 					},
 				});
 			if (calledCabang.status === false) {
@@ -117,7 +117,7 @@ module.exports = {
 				},
 			});
 			if (calledUser.role === "cabang") {
-				cabangId = calledUser.cabangId;
+				cabangId = calledUser.cabang.id;
 			}
 			const allKaryawan = await Karyawan.findAndCountAll({
 				where: restore
