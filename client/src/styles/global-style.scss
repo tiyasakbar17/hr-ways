@@ -38,30 +38,108 @@ $danger: #e84118;
 // --------------------------- Start --------------------- //
 
 .home-container {
-  display: grid;
-  place-content: center center;
+	display: grid;
+	place-content: center center;
 	.wrapper {
 		display: grid;
 		grid-template-areas: "main-picture login-side";
 		grid-template-columns: 3fr 1fr;
-
 		.main-picture {
 			grid-area: main-picture;
 			display: grid;
 			place-content: center center;
-      .main-image{
-        border-radius: 10px;
-        width: 90%;
-        margin: auto;
-      }
+			width: 100%;
+			.main-image {
+				border-radius: 10px;
+				width: 90%;
+				margin: auto;
+			}
 		}
 		.login-side {
 			grid-area: login-side;
 			display: grid;
 			place-content: center center;
-      .main-item{
-        width: 100%;
-      }
+			grid-template-columns: 100%;
+			.main-item {
+				width: 100%;
+			}
 		}
 	}
+}
+.actions {
+	display: grid;
+	grid-template-areas: "custom-search form-switch register-new";
+	.custom-search {
+		grid-area: custom-search;
+	}
+	.form-switch {
+		align-self: center;
+		grid-area: form-switch;
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 36px;
+			height: 20px;
+		}
+
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: -2px;
+			bottom: 0;
+			background-color: #ccc;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+		}
+
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 12px;
+			width: 12px;
+			left: 0px;
+			right: 10px;
+			bottom: 4px;
+			background-color: white;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+		}
+
+		input:checked + .slider {
+			background-color: #2196f3;
+		}
+
+		input:focus + .slider {
+			box-shadow: 0 0 1px #2196f3;
+		}
+
+		input:checked + .slider:before {
+			-webkit-transform: translateX(26px);
+			-ms-transform: translateX(26px);
+			transform: translateX(26px);
+		}
+
+		/* Rounded sliders */
+		.slider.round {
+			border-radius: 20px;
+		}
+
+		.slider.round:before {
+			border-radius: 50%;
+		}
+	}
+	.register-new {
+		grid-area: register-new;
+	}
+}
+.action-button {
+	display: inline;
 }

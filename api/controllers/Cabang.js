@@ -46,13 +46,15 @@ module.exports = {
 								? {
 										namaCabang: sequelize.where(sequelize.fn("LOWER", sequelize.col("namaCabang")), "LIKE", "%" + keyword.toLowerCase() + "%"),
 										deletedAt: { [Op.ne]: null },
+										id: { [Op.ne]: 1 },
 								  }
-								: { deletedAt: { [Op.ne]: null } }
+								: { deletedAt: { [Op.ne]: null }, id: { [Op.ne]: 1 } }
 							: keyword
 							? {
 									namaCabang: sequelize.where(sequelize.fn("LOWER", sequelize.col("namaCabang")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+									id: { [Op.ne]: 1 },
 							  }
-							: {},
+							: { id: { [Op.ne]: 1 } },
 						paranoid: restore ? false : true,
 						limit: 10,
 						offset: (parseInt(page || 1) - 1) * 10,

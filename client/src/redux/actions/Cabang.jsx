@@ -31,3 +31,62 @@ export const getCabang =
 			dispatch(showPopUp(error.response.data.message));
 		}
 	};
+
+export const deleteCabang = (id) => async (dispatch) => {
+	try {
+		dispatch(showLoading());
+		const results = await Axios.delete(`/cabang/delete?id=${id}`, configJson);
+		dispatch({
+			type: "DELETE_CABANG",
+			payload: id,
+		});
+		dispatch(showPopUp(results.data.message));
+		dispatch(closeLoading());
+	} catch (error) {
+		dispatch(closeLoading());
+		dispatch(showPopUp(error.response.data.message));
+	}
+};
+
+export const restoreCabang = (id) => async (dispatch) => {
+	try {
+		dispatch(showLoading());
+		const results = await Axios.patch(`/cabang/restore?id=${id}`, configJson);
+		dispatch({
+			type: "DELETE_CABANG",
+			payload: id,
+		});
+		dispatch(showPopUp(results.data.message));
+		dispatch(closeLoading());
+	} catch (error) {
+		dispatch(closeLoading());
+		dispatch(showPopUp(error.response.data.message));
+	}
+};
+
+export const addCabang = (data) => async (dispatch) => {
+	try {
+		dispatch(showLoading());
+		const results = await Axios.post(`/cabang/add`, data, configJson);
+		dispatch(getCabang({ page: 1, restore: "", keyword: "" }));
+		dispatch(showPopUp(results.data.message));
+	} catch (error) {
+		dispatch(closeLoading());
+		dispatch(showPopUp(error.response.data.message));
+	}
+};
+
+export const editCabang = (data) => async (dispatch) => {
+	try {
+		dispatch(showLoading());
+		const results = await Axios.patch(`/cabang/edit`, data, configJson);
+		dispatch({
+			type: "EDIT_CABANG",
+			payload: results.data.data,
+		});
+		dispatch(showPopUp(results.data.message));
+	} catch (error) {
+		dispatch(closeLoading());
+		dispatch(showPopUp(error.response.data.message));
+	}
+};

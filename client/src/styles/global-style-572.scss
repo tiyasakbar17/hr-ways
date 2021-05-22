@@ -11,15 +11,16 @@ $danger: #e84118;
 		place-content: center center;
 		.wrapper {
 			display: grid;
-			grid-template-areas: "main-picture"
-                                 "login-side";
+			grid-template-areas:
+				"main-picture"
+				"login-side";
 			grid-template-rows: 3fr 1fr;
 			grid-template-columns: 100%;
 			.main-picture {
 				grid-area: main-picture;
 				display: grid;
 				place-content: center center;
-                width: 100%;
+				width: 100%;
 				.main-image {
 					border-radius: 10px;
 					width: 100%;
@@ -30,11 +31,17 @@ $danger: #e84118;
 				grid-area: login-side;
 				display: grid;
 				place-content: start center;
-                grid-template-columns: 100%;
+				grid-template-columns: 100%;
 				.main-item {
 					width: 100%;
 				}
 			}
 		}
+	}
+	.actions {
+		display: grid;
+		grid-template-areas:
+			"custom-search custom-search"
+			"form-switch register-new";
 	}
 }

@@ -22,7 +22,7 @@
 .loadingObj {
 	height: 70px;
 	width: 10px;
-	background: #192a56;
+	background: #fbc531;
 	margin: 0 3px;
 	border-radius: 3px;
 	animation: loading 0.8s infinite;

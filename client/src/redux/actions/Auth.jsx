@@ -31,8 +31,8 @@ export const loadData = () => async (dispatch) => {
 export const userLogin = (data) => async (dispatch) => {
 	try {
 		dispatch(showLoading());
-		console.log(data);
 		const results = await Axios.post(`/login`, data, configJson);
+		SetAuthToken(results.data.data.token);
 		dispatch({
 			type: "LOGIN",
 			payload: results.data.data,
