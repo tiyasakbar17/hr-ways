@@ -12,7 +12,7 @@ export const getKaryawan =
 	async (dispatch) => {
 		try {
 			dispatch(showLoading());
-			const results = await Axios.get(`/api/v1/karyawan/all?id=${id ? id : ""}page=${page}&keyword=${keyword}&restore=${restore ? restore : ""}`, configJson);
+			const results = await Axios.get(`/api/v1/karyawan/all?id=${id ? id : ""}&page=${page}&keyword=${keyword}&restore=${restore ? restore : ""}`, configJson);
 			dispatch({
 				type: "GET_KARYAWAN",
 				payload: results.data.data,
