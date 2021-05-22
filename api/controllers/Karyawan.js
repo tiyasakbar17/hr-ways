@@ -1,6 +1,7 @@
 const { Karyawan, PersonalData, User, Cabang, Alamat, sequelize } = require("../../models");
 const joi = require("joi");
 const { failedResponse, successResponse } = require("../responses");
+const { Op } = require("sequelize");
 
 module.exports = {
 	getKaryawanByKtp: async (req, res) => {
@@ -154,9 +155,9 @@ module.exports = {
 		try {
 			const { id, ...dataValidate } = req.body,
 				{ nama, tempatLahir, tanggalLahir, tanggalMasuk, ...otherData } = dataValidate,
-				{ provinsi, kabupaten, kecamatan, kelurahan, kodePos, detailAlamat, nomorKtp, nomorKk, npwp, bank, nomorRekening, gaji, ...mainData } = dataValidate;
-			const { ...personalData } = { provinsi, kabupaten, kecamatan, kelurahan, kodePos, detailAlamat, ...otherData };
-			const { ...alamatData } = { nomorKtp, nomorKk, npwp, bank, nomorRekening, gaji, ...otherData };
+				{ provinsi, kabupaten, kecamatan, kelurahan, kodePos, detailAlamat, nomorKtp, nomorKk, npwp, bank, nomorRekening, gaji, ...mainData } = dataValidate,
+				{ ...personalData } = { provinsi, kabupaten, kecamatan, kelurahan, kodePos, detailAlamat, ...otherData },
+				{ ...alamatData } = { nomorKtp, nomorKk, npwp, bank, nomorRekening, gaji, ...otherData };
 			const calledKaryawan = await Karyawan.findOne({
 				where: {
 					id,
@@ -171,7 +172,7 @@ module.exports = {
 					where: {
 						nomorKtp,
 						karyawanId: {
-							ne: id,
+							[Op.ne]: id,
 						},
 					},
 				});
@@ -182,13 +183,14 @@ module.exports = {
 
 			//**---------------- check if the cabang is active -----------------*/
 			const calledUser = await User.findOne({
-					where: { id: req.user.id },
-				}),
-				calledCabang = await Cabang.findOne({
-					where: {
-						id: calledUser.cabangId,
-					},
-				});
+				where: { id: req.user.id },
+			});
+
+			const calledCabang = await Cabang.findOne({
+				where: {
+					id: calledUser.cabang.id,
+				},
+			});
 			if (calledCabang.status === false) {
 				return failedResponse(res, "Cabang is Inactive, Can't edit Employee Data at the moment");
 			}
@@ -223,7 +225,7 @@ module.exports = {
 				await Alamat.update(alamatData, { where: { karyawanId: id } });
 			}
 			if (nomorKtp || nomorKk || npwp || bank || nomorRekening || gaji || nama || tempatLahir || tanggalLahir || tanggalMasuk) {
-				if (gaji) {
+				if (isNaN(parseInt(gaji))) {
 					//**-----------formatting gaji---------------*/
 					const stringGaji = gaji.toString(),
 						sisaPanjang = stringGaji.length > 3 ? stringGaji.length % 3 : 0,

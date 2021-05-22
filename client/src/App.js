@@ -12,6 +12,7 @@ import useWindowDimensions from "./components/ScreenSize";
 import Navbar from "./components/Navbar";
 import AdminPage from "./pages/AdminPage";
 import UserPage from "./pages/UserPage";
+import KaryawanPage from "./pages/KaryawanPage";
 
 function App() {
 	const { width, height } = useWindowDimensions();
@@ -29,9 +30,10 @@ function App() {
 				<div className="custom-body" style={{ minWidth: width, minHeight: height }}>
 					<Navbar />
 					<Switch>
-						<Route exact path="/" component={Home} /> {/* Done */}
+						<Route exact path="/" component={Home} />
 						<UserRouter exact path="/admin" role={["admin"]} component={AdminPage} />
-						<UserRouter exact path="/admin/user" role={["user"]} component={UserPage} />
+						<UserRouter exact path="/admin/karyawan/:id" role={["admin"]} component={KaryawanPage} />
+						<UserRouter exact path="/admin/user" role={["admin"]} component={UserPage} />
 						<UserRouter exact path="/user" role={["cabang"]} component={UserPage} />
 						<Route component={Page404} />
 					</Switch>

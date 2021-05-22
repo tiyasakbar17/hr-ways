@@ -32,14 +32,12 @@ export const getCabang =
 		}
 	};
 
-export const deleteCabang = (id) => async (dispatch) => {
+export const deleteCabang = (id, keyword) => async (dispatch, getState) => {
 	try {
+		const { Cabang } = getState();
 		dispatch(showLoading());
 		const results = await Axios.delete(`/cabang/delete?id=${id}`, configJson);
-		dispatch({
-			type: "DELETE_CABANG",
-			payload: id,
-		});
+		dispatch(getCabang({ page: Cabang.pageNow, keyword, restore: "" }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
 	} catch (error) {
@@ -48,14 +46,12 @@ export const deleteCabang = (id) => async (dispatch) => {
 	}
 };
 
-export const restoreCabang = (id) => async (dispatch) => {
+export const restoreCabang = (id, keyword) => async (dispatch, getState) => {
 	try {
+		const { Cabang } = getState();
 		dispatch(showLoading());
 		const results = await Axios.patch(`/cabang/restore?id=${id}`, configJson);
-		dispatch({
-			type: "DELETE_CABANG",
-			payload: id,
-		});
+		dispatch(getCabang({ page: Cabang.pageNow, keyword, restore: true }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
 	} catch (error) {

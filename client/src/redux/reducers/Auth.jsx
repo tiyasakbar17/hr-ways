@@ -2,6 +2,7 @@ const innitialState = {
 	isLogin: false,
 	userData: null,
 	user: null,
+	loading: true
 };
 
 const Auth = (state = innitialState, action) => {
@@ -12,6 +13,7 @@ const Auth = (state = innitialState, action) => {
 				...state,
 				userData: payload,
 				isLogin: true,
+				loading: false,
 			};
 		}
 
@@ -22,6 +24,7 @@ const Auth = (state = innitialState, action) => {
 				...state,
 				userData: restData,
 				isLogin: true,
+				loading: false
 			};
 
 		case "LOGOUT":
@@ -32,6 +35,7 @@ const Auth = (state = innitialState, action) => {
 		case "AUTH_ERROR":
 			return {
 				...innitialState,
+				loading: false
 			};
 		default:
 			return state;

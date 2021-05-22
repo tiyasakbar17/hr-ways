@@ -2,7 +2,7 @@ import React from "react";
 
 function AddData({ title, children, actions, type, cancelAction }) {
 	return (
-		<div className="modal" id="addDataLabel" tabindex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
+		<div className="modal" id="addDataLabel" tabIndex="-1" role="dialog" aria-labelledby="addDataLabel" aria-hidden="true">
 			<div className="modal-dialog modal-dialog-scrollable" role="document">
 				<div className="modal-content">
 					<div className="modal-header">

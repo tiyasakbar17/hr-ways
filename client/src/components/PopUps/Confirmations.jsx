@@ -2,7 +2,7 @@ import React from "react";
 
 function Confirmations({ title, message, actions }) {
 	return (
-		<div className="modal" id="modalLabel" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div className="modal" id="modalLabel" tabIndex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 			<div className="modal-dialog modal-dialog-scrollable" role="document">
 				<div className="modal-content">
 					<div className="modal-header">

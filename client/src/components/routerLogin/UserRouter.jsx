@@ -4,7 +4,10 @@ import { Redirect, Route } from "react-router-dom";
 
 const LoginRoute = ({ component: Component, Auth, role, ...rest }) => {
 	if (Auth.loading) {
-		return <div className=""></div>;
+		if (localStorage.getItem("token")) {
+			return <div className=""></div>;
+		}
+		return <Route {...rest} render={(props) => <Redirect to="/" />} />;
 	} else {
 		return <Route {...rest} render={(props) => (Auth.isLogin && (role.includes(Auth.userData.role) || Auth.userData.role === "admin") ? <Component {...props} /> : <Redirect to="/" />)} />;
 	}
