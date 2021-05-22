@@ -14,10 +14,9 @@
 		"dialect": "mysql"
 	},
 	"production": {
-		"username": "postgres",
-		"password": "postgres",
-		"database": "hrways",
-		"host": "db",
-		"dialect": "postgres"
+		"use_env_variable": "DATABASE_URL",
+		"dialectOptions": { "ssl": { "require": true, "rejectUnauthorized": false } },
+		"dialect": "postgres",
+		"protocol": "postgres"
 	}
 }
