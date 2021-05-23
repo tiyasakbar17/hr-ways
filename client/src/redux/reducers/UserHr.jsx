@@ -5,8 +5,13 @@ const innitialState = {
 };
 
 const UserHr = (state = innitialState, action) => {
-	const { type } = action;
+	const { type, payload } = action;
 	switch (type) {
+		case "GET_USER":
+			return {
+				...state,
+				...payload,
+			};
 		default:
 			return state;
 	}

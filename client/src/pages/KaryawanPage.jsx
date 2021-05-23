@@ -143,6 +143,7 @@ function KaryawanPage() {
 			changeHandler,
 			restoreHandler,
 			cancelHandler,
+			show: Auth.userData === "admin" ? false : true,
 		};
 	return (
 		<div className="mt-4 custom-navbar">
@@ -152,27 +153,28 @@ function KaryawanPage() {
 					<div className="form">
 						<div className="h5">Cabang's Employees Data</div>
 						<label className="mt-1">Name</label>
-						<input disabled={state.type !== "edit" ? true : false} type="text" name="nama" onChange={changeFormHandler} value={state.formData.nama} className="form-control" id="nama" placeholder="Name" />
+						<input disabled={state.type === "view" ? true : false} type="text" name="nama" onChange={changeFormHandler} value={state.formData.nama} className="form-control" id="nama" placeholder="Name" />
 						<label className="mt-1">Birth Place</label>
-						<input disabled={state.type !== "edit"} type="text" name="tempatLahir" onChange={changeFormHandler} value={state.formData.tempatLahir} className="form-control" id="tempatLahir" placeholder="Birth Place" />
+						<input disabled={state.type === "view"} type="text" name="tempatLahir" onChange={changeFormHandler} value={state.formData.tempatLahir} className="form-control" id="tempatLahir" placeholder="Birth Place" />
 						<label className="mt-1">Birth Date</label>
-						<input disabled={state.type !== "edit"} type="date" name="tanggalLahir" onChange={changeFormHandler} value={state.formData.tanggalLahir.substr(0, 10)} className="form-control" id="tanggalLahir" />
+						<input disabled={state.type === "view"} type="date" name="tanggalLahir" onChange={changeFormHandler} value={state.formData.tanggalLahir.substr(0, 10)} className="form-control" id="tanggalLahir" />
 						<label className="mt-1">Start Working</label>
-						<input disabled={state.type !== "edit"} type="date" name="tanggalMasuk" onChange={changeFormHandler} value={state.formData.tanggalMasuk.substr(0, 10)} className="form-control" id="tanggalMasuk" placeholder="Start Working" />
+						<input disabled={state.type === "view"} type="date" name="tanggalMasuk" onChange={changeFormHandler} value={state.formData.tanggalMasuk.substr(0, 10)} className="form-control" id="tanggalMasuk" placeholder="Start Working" />
 						<label className="mt-1">KTP</label>
-						<input disabled={state.type !== "edit"} type="text" name="nomorKtp" onChange={changeFormHandler} value={state.formData.nomorKtp} className="form-control" id="nomorKtp" placeholder="KTP" />
+						<input disabled={state.type === "view"} type="text" name="nomorKtp" onChange={changeFormHandler} value={state.formData.nomorKtp} className="form-control" id="nomorKtp" placeholder="KTP" />
 						<label className="mt-1">KK</label>
-						<input disabled={state.type !== "edit"} type="text" name="nomorKk" onChange={changeFormHandler} value={state.formData.nomorKk} className="form-control" id="nomorKk" placeholder="KK" />
+						<input disabled={state.type === "view"} type="text" name="nomorKk" onChange={changeFormHandler} value={state.formData.nomorKk} className="form-control" id="nomorKk" placeholder="KK" />
 						<label className="mt-1">NPWP</label>
-						<input disabled={state.type !== "edit"} type="text" name="npwp" onChange={changeFormHandler} value={state.formData.npwp} className="form-control" id="npwp" placeholder="NPWP" />
-						<label className="mt-1">KTP</label>
-						<input disabled={state.type !== "edit"} type="text" name="bank" onChange={changeFormHandler} value={state.formData.bank} className="form-control" id="bank" placeholder="Name" />
+						<input disabled={state.type === "view"} type="text" name="npwp" onChange={changeFormHandler} value={state.formData.npwp} className="form-control" id="npwp" placeholder="NPWP" />
+						<label className="mt-1">Bank</label>
+						<input disabled={state.type === "view"} type="text" name="bank" onChange={changeFormHandler} value={state.formData.bank} className="form-control" id="bank" placeholder="Bank Name" />
 						<label className="mt-1">Bank Account</label>
-						<input disabled={state.type !== "edit"} type="text" name="nomorRekening" onChange={changeFormHandler} value={state.formData.nomorRekening} className="form-control" id="nomorRekening" placeholder="Bank Account" />
+						<input disabled={state.type === "view"} type="text" name="nomorRekening" onChange={changeFormHandler} value={state.formData.nomorRekening} className="form-control" id="nomorRekening" placeholder="Bank Account" />
 						<label className="mt-1">Salary</label>
-						<input disabled={state.type !== "edit"} type="text" name="gaji" onChange={changeFormHandler} value={state.formData.gaji} className="form-control" id="gaji" placeholder="Salary" />
+						<input disabled={state.type === "view"} type="text" name="gaji" onChange={changeFormHandler} value={state.formData.gaji} className="form-control" id="gaji" placeholder="Salary" />
 						<label className="mt-1">Province</label>
-						<select disabled={state.type !== "edit"} name="provinsi" onChange={changeFormHandler} value={state.formData.provinsi} className="form-control">
+						<select disabled={state.type === "view"} name="provinsi" onChange={changeFormHandler} value={state.formData.provinsi} className="form-control">
+							<option>Select</option>
 							{Karyawan.alamat.provinsi.map((item, index) => {
 								return (
 									<option key={index} value={item}>
@@ -182,7 +184,8 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">Regency</label>
-						<select disabled={state.type !== "edit"} name="kabupaten" onChange={changeFormHandler} value={state.formData.kabupaten} className="form-control">
+						<select disabled={state.type === "view"} name="kabupaten" onChange={changeFormHandler} value={state.formData.kabupaten} className="form-control">
+							<option>Select</option>
 							{Karyawan.alamat.kabupaten.map((item, index) => {
 								return (
 									<option key={index} value={item}>
@@ -192,7 +195,8 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">District</label>
-						<select disabled={state.type !== "edit"} name="kecamatan" onChange={changeFormHandler} value={state.formData.kecamatan} className="form-control">
+						<select disabled={state.type === "view"} name="kecamatan" onChange={changeFormHandler} value={state.formData.kecamatan} className="form-control">
+							<option>Select</option>
 							{Karyawan.alamat.kecamatan.map((item, index) => {
 								return (
 									<option key={index} value={item}>
@@ -202,7 +206,8 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">Sub-District</label>
-						<select disabled={state.type !== "edit"} name="kelurahan" onChange={changeFormHandler} value={state.formData.kelurahan} className="form-control">
+						<select disabled={state.type === "view"} name="kelurahan" onChange={changeFormHandler} value={state.formData.kelurahan} className="form-control">
+							<option>Select</option>
 							{Karyawan.alamat.kelurahan.map((item, index) => {
 								return (
 									<option key={index} value={item.kelurahan}>
@@ -214,7 +219,7 @@ function KaryawanPage() {
 						<label className="mt-1">Postal Code</label>
 						<input type="text" name="kodePos" disabled onChange={changeFormHandler} value={state.formData.kodePos} className="form-control" id="kodePos" placeholder="Postal Code" />
 						<label className="mt-1">Address Detail</label>
-						<input disabled={state.type !== "edit"} type="text" name="detailAlamat" onChange={changeFormHandler} value={state.formData.detailAlamat} className="form-control" id="detailAlamat" placeholder="Address Detail" />
+						<input disabled={state.type === "view"} type="text" name="detailAlamat" onChange={changeFormHandler} value={state.formData.detailAlamat} className="form-control" id="detailAlamat" placeholder="Address Detail" />
 					</div>
 				</>
 			</AddData>
@@ -224,7 +229,7 @@ function KaryawanPage() {
 				</div>
 			) : null}
 			<h1>{state.restore ? "Deleted Employees" : "All Employees"}</h1>
-			{Auth.userData.role === "admin" ? null : <TableActions {...options} />}
+			<TableActions {...options} />
 			<table className="table table-striped mt-1 custom-table2">
 				<thead className="bg-second">
 					<tr>
@@ -245,12 +250,12 @@ function KaryawanPage() {
 								<td>Rp. {item.personalData.gaji}</td>
 								<td className="d-flex flex-row">
 									{state.restore ? (
-										<div className="pointer" data-toggle="modal" data-target="#modalLabel" onClick={() => confirmationHandler(item.namaCabang, item.id)}>
+										<div className="pointer" data-toggle="modal" data-target="#modalLabel" onClick={() => confirmationHandler(item.nama, item.id)}>
 											<i className="fas fa-recycle"></i>
 										</div>
 									) : (
 										<>
-											<div className="pointer" data-toggle="modal" data-target="#addDataLabel" onClick={() => editHandler(item, "add")}>
+											<div className="pointer" data-toggle="modal" data-target="#addDataLabel" onClick={() => editHandler(item, "view")}>
 												<i className="fas fa-eye"></i>
 											</div>
 											<div className="pointer ml-2" data-toggle="modal" data-target="#addDataLabel" onClick={() => editHandler(item, "edit")}>

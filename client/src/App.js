@@ -34,7 +34,7 @@ function App() {
 						<UserRouter exact path="/admin" role={["admin"]} component={AdminPage} />
 						<UserRouter exact path="/admin/karyawan/:id" role={["admin"]} component={KaryawanPage} />
 						<UserRouter exact path="/admin/user" role={["admin"]} component={UserPage} />
-						<UserRouter exact path="/user" role={["cabang"]} component={UserPage} />
+						<UserRouter exact path="/user" role={["cabang"]} component={KaryawanPage} />
 						<Route component={Page404} />
 					</Switch>
 				</div>

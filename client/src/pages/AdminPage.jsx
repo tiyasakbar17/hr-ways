@@ -20,7 +20,7 @@ function AdminPage() {
 	};
 	const [state, setstate] = useState(initialState);
 	const dispatch = useDispatch();
-	const history = useHistory()
+	const history = useHistory();
 	const Cabang = useSelector((state) => state.Cabang);
 
 	const localGetCabang = ({ page }) => {
@@ -63,12 +63,13 @@ function AdminPage() {
 			setstate(initialState);
 		},
 		detailCabang = (id) => {
-			history.push(`/admin/karyawan/${id}`)
+			history.push(`/admin/karyawan/${id}`);
 		},
 		options = {
 			changeHandler,
 			restoreHandler,
 			cancelHandler,
+			show: true,
 		};
 
 	return (
