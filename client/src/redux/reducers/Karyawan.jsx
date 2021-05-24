@@ -8,6 +8,7 @@ const innitialState = {
 		kecamatan: [],
 		kelurahan: [],
 	},
+	oneData: null,
 };
 
 const Karyawan = (state = innitialState, action) => {
@@ -32,6 +33,11 @@ const Karyawan = (state = innitialState, action) => {
 			return {
 				...state,
 				...payload,
+			};
+		case "GET_KARYAWAN_KTP":
+			return {
+				...state,
+				oneData: payload,
 			};
 		default:
 			return state;

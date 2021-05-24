@@ -26,6 +26,27 @@ export const getKaryawan =
 		}
 	};
 
+export const karyawanByKtp = (data) => async (dispatch) => {
+	try {
+		dispatch(showLoading());
+		const results = await Axios.get(`/api/v1/karyawan?ktp=${data}`, configJson);
+		dispatch({
+			type: "GET_KARYAWAN_KTP",
+			payload: results.data.data,
+		});
+		dispatch(closeLoading());
+		return true;
+	} catch (error) {
+		dispatch(closeLoading());
+		dispatch({
+			type: "GET_KARYAWAN_KTP",
+			payload: null,
+		});
+		dispatch(showPopUp(error.response.data.message));
+		return false;
+	}
+};
+
 export const deleteKaryawan = (id, keyword) => async (dispatch, getState) => {
 	try {
 		const { Karyawan } = getState();

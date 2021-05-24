@@ -116,6 +116,9 @@ module.exports = {
 					id: req.user.id,
 				},
 			});
+			if (calledUser === null) {
+				return failedResponse(res, 'No Account Founded')
+			}
 			if (calledUser.role === "cabang") {
 				cabangId = calledUser.cabang.id;
 			}
