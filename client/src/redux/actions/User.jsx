@@ -13,18 +13,10 @@ export const getUser =
 		try {
 			dispatch(showLoading());
 			const results = await Axios.get(`/api/v1/user/all?page=${page}&keyword=${keyword}&restore=${restore}`, configJson);
-			const { data } = results.data.data;
-			if (data === undefined) {
-				dispatch({
-					type: "GET_ALL_CABANG",
-					payload: results.data.data,
-				});
-			} else {
-				dispatch({
-					type: "GET_CABANG",
-					payload: results.data.data,
-				});
-			}
+			dispatch({
+				type: "GET_USER",
+				payload: results.data.data,
+			});
 			dispatch(closeLoading());
 		} catch (error) {
 			dispatch(closeLoading());
@@ -34,13 +26,14 @@ export const getUser =
 
 export const deleteUser = (id, keyword) => async (dispatch, getState) => {
 	try {
-		const { User } = getState();
+		const { UserHr } = getState();
 		dispatch(showLoading());
 		const results = await Axios.delete(`/api/v1/user/delete?id=${id}`, configJson);
-		dispatch(getUser({ page: User.pageNow, keyword, restore: "" }));
+		dispatch(getUser({ page: UserHr.pageNow, keyword, restore: "" }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
 	} catch (error) {
+		console.log(error);
 		dispatch(closeLoading());
 		dispatch(showPopUp(error.response.data.message));
 	}
@@ -48,10 +41,10 @@ export const deleteUser = (id, keyword) => async (dispatch, getState) => {
 
 export const restoreUser = (id, keyword) => async (dispatch, getState) => {
 	try {
-		const { User } = getState();
+		const { UserHr } = getState();
 		dispatch(showLoading());
 		const results = await Axios.patch(`/api/v1/user/restore?id=${id}`, configJson);
-		dispatch(getUser({ page: User.pageNow, keyword, restore: true }));
+		dispatch(getUser({ page: UserHr.pageNow, keyword, restore: true }));
 		dispatch(showPopUp(results.data.message));
 		dispatch(closeLoading());
 	} catch (error) {

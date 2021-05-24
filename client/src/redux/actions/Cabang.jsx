@@ -13,6 +13,7 @@ export const getCabang =
 		try {
 			dispatch(showLoading());
 			const results = await Axios.get(`/api/v1/cabang/all?page=${page}&keyword=${keyword}&restore=${restore}`, configJson);
+			
 			const { data } = results.data.data;
 			if (data === undefined) {
 				dispatch({

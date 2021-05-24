@@ -54,11 +54,13 @@ function AdminPage() {
 			dispatch(restoreCabang(state.confirmation.id, state.keyword));
 			setstate((prev) => ({ ...prev, confirmation: initialState.confirmation }));
 		},
-		addCabangHandle = () => {
+		addCabangHandle = (e) => {
+			e.preventDefault();
 			dispatch(addCabang({ namaCabang: state.namaCabang }));
 			setstate(initialState);
 		},
-		editCabangHandle = () => {
+		editCabangHandle = (e) => {
+			e.preventDefault();
 			dispatch(editCabang({ id: state.confirmation.id, namaCabang: state.namaCabang, status: state.status }));
 			setstate(initialState);
 		},
@@ -80,7 +82,7 @@ function AdminPage() {
 					<label className="h6" htmlFor="namaCabang">
 						Cabang's Name
 					</label>
-					<input type="text" name="namaCabang" onChange={changeHandler} value={state.namaCabang} className="form-control" id="namaCabang" placeholder="Name" />
+					<input type="text" name="namaCabang" onChange={changeHandler} value={state.namaCabang} className="form-control" id="namaCabang" placeholder="Name" required/>
 					{state.type === "edit" ? (
 						<div className="actions mt-2 d-flex flex-column">
 							<h6>Status</h6>

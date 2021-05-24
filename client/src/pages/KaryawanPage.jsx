@@ -127,7 +127,8 @@ function KaryawanPage() {
 			dispatch(restoreKaryawan(state.confirmation.id, state.keyword));
 			setstate((prev) => ({ ...prev, confirmation: initialState.confirmation }));
 		},
-		addKaryawanHandle = () => {
+		addKaryawanHandle = (e) => {
+			e.preventDefault();
 			dispatch(addKaryawan(state.formData));
 			setstate(initialState);
 		},
@@ -150,30 +151,30 @@ function KaryawanPage() {
 			<Confirmations title={`${state.restore ? "Restore" : "Delete"}`} message={`${state.restore ? `Are you sure to restore ${state.confirmation.message}?` : `Are you sure to delete ${state.confirmation.message}?`}`} actions={state.restore ? restoreConfirmation : deleteHandler} />
 			<AddData title="employee" type={state.type} actions={state.type === "add" ? (Auth.userData.role === "admin" ? null : addKaryawanHandle) : editKaryawanHandle} cancelAction={cancelHandler}>
 				<>
-					<div className="form">
+					<form>
 						<div className="h5">Cabang's Employees Data</div>
 						<label className="mt-1">Name</label>
-						<input disabled={state.type === "view" ? true : false} type="text" name="nama" onChange={changeFormHandler} value={state.formData.nama} className="form-control" id="nama" placeholder="Name" />
+						<input disabled={state.type === "view" ? true : false} type="text" name="nama" onChange={changeFormHandler} value={state.formData.nama} className="form-control" id="nama" placeholder="Name" required />
 						<label className="mt-1">Birth Place</label>
-						<input disabled={state.type === "view"} type="text" name="tempatLahir" onChange={changeFormHandler} value={state.formData.tempatLahir} className="form-control" id="tempatLahir" placeholder="Birth Place" />
+						<input disabled={state.type === "view"} type="text" name="tempatLahir" onChange={changeFormHandler} value={state.formData.tempatLahir} className="form-control" id="tempatLahir" placeholder="Birth Place" required />
 						<label className="mt-1">Birth Date</label>
-						<input disabled={state.type === "view"} type="date" name="tanggalLahir" onChange={changeFormHandler} value={state.formData.tanggalLahir.substr(0, 10)} className="form-control" id="tanggalLahir" />
+						<input disabled={state.type === "view"} type="date" name="tanggalLahir" onChange={changeFormHandler} value={state.formData.tanggalLahir.substr(0, 10)} className="form-control" id="tanggalLahir" required />
 						<label className="mt-1">Start Working</label>
-						<input disabled={state.type === "view"} type="date" name="tanggalMasuk" onChange={changeFormHandler} value={state.formData.tanggalMasuk.substr(0, 10)} className="form-control" id="tanggalMasuk" placeholder="Start Working" />
+						<input disabled={state.type === "view"} type="date" name="tanggalMasuk" onChange={changeFormHandler} value={state.formData.tanggalMasuk.substr(0, 10)} className="form-control" id="tanggalMasuk" placeholder="Start Working" required />
 						<label className="mt-1">KTP</label>
-						<input disabled={state.type === "view"} type="text" name="nomorKtp" onChange={changeFormHandler} value={state.formData.nomorKtp} className="form-control" id="nomorKtp" placeholder="KTP" />
+						<input disabled={state.type === "view"} type="text" name="nomorKtp" onChange={changeFormHandler} value={state.formData.nomorKtp} className="form-control" id="nomorKtp" placeholder="KTP" required />
 						<label className="mt-1">KK</label>
-						<input disabled={state.type === "view"} type="text" name="nomorKk" onChange={changeFormHandler} value={state.formData.nomorKk} className="form-control" id="nomorKk" placeholder="KK" />
+						<input disabled={state.type === "view"} type="text" name="nomorKk" onChange={changeFormHandler} value={state.formData.nomorKk} className="form-control" id="nomorKk" placeholder="KK" required />
 						<label className="mt-1">NPWP</label>
-						<input disabled={state.type === "view"} type="text" name="npwp" onChange={changeFormHandler} value={state.formData.npwp} className="form-control" id="npwp" placeholder="NPWP" />
+						<input disabled={state.type === "view"} type="text" name="npwp" onChange={changeFormHandler} value={state.formData.npwp} className="form-control" id="npwp" placeholder="NPWP" required />
 						<label className="mt-1">Bank</label>
-						<input disabled={state.type === "view"} type="text" name="bank" onChange={changeFormHandler} value={state.formData.bank} className="form-control" id="bank" placeholder="Bank Name" />
+						<input disabled={state.type === "view"} type="text" name="bank" onChange={changeFormHandler} value={state.formData.bank} className="form-control" id="bank" placeholder="Bank Name" required />
 						<label className="mt-1">Bank Account</label>
-						<input disabled={state.type === "view"} type="text" name="nomorRekening" onChange={changeFormHandler} value={state.formData.nomorRekening} className="form-control" id="nomorRekening" placeholder="Bank Account" />
+						<input disabled={state.type === "view"} type="text" name="nomorRekening" onChange={changeFormHandler} value={state.formData.nomorRekening} className="form-control" id="nomorRekening" placeholder="Bank Account" required />
 						<label className="mt-1">Salary</label>
-						<input disabled={state.type === "view"} type="text" name="gaji" onChange={changeFormHandler} value={state.formData.gaji} className="form-control" id="gaji" placeholder="Salary" />
+						<input disabled={state.type === "view"} type="text" name="gaji" onChange={changeFormHandler} value={state.formData.gaji} className="form-control" id="gaji" placeholder="Salary" required />
 						<label className="mt-1">Province</label>
-						<select disabled={state.type === "view"} name="provinsi" onChange={changeFormHandler} value={state.formData.provinsi} className="form-control">
+						<select disabled={state.type === "view"} name="provinsi" onChange={changeFormHandler} value={state.formData.provinsi} className="form-control" required>
 							<option>Select</option>
 							{Karyawan.alamat.provinsi.map((item, index) => {
 								return (
@@ -184,7 +185,7 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">Regency</label>
-						<select disabled={state.type === "view"} name="kabupaten" onChange={changeFormHandler} value={state.formData.kabupaten} className="form-control">
+						<select disabled={state.type === "view"} name="kabupaten" onChange={changeFormHandler} value={state.formData.kabupaten} className="form-control" required>
 							<option>Select</option>
 							{Karyawan.alamat.kabupaten.map((item, index) => {
 								return (
@@ -195,7 +196,7 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">District</label>
-						<select disabled={state.type === "view"} name="kecamatan" onChange={changeFormHandler} value={state.formData.kecamatan} className="form-control">
+						<select disabled={state.type === "view"} name="kecamatan" onChange={changeFormHandler} value={state.formData.kecamatan} className="form-control" required>
 							<option>Select</option>
 							{Karyawan.alamat.kecamatan.map((item, index) => {
 								return (
@@ -206,7 +207,7 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">Sub-District</label>
-						<select disabled={state.type === "view"} name="kelurahan" onChange={changeFormHandler} value={state.formData.kelurahan} className="form-control">
+						<select disabled={state.type === "view"} name="kelurahan" onChange={changeFormHandler} value={state.formData.kelurahan} className="form-control" required>
 							<option>Select</option>
 							{Karyawan.alamat.kelurahan.map((item, index) => {
 								return (
@@ -217,10 +218,10 @@ function KaryawanPage() {
 							})}
 						</select>
 						<label className="mt-1">Postal Code</label>
-						<input type="text" name="kodePos" disabled onChange={changeFormHandler} value={state.formData.kodePos} className="form-control" id="kodePos" placeholder="Postal Code" />
+						<input type="text" name="kodePos" disabled onChange={changeFormHandler} value={state.formData.kodePos} className="form-control" id="kodePos" placeholder="Postal Code" required />
 						<label className="mt-1">Address Detail</label>
-						<input disabled={state.type === "view"} type="text" name="detailAlamat" onChange={changeFormHandler} value={state.formData.detailAlamat} className="form-control" id="detailAlamat" placeholder="Address Detail" />
-					</div>
+						<input disabled={state.type === "view"} type="text" name="detailAlamat" onChange={changeFormHandler} value={state.formData.detailAlamat} className="form-control" id="detailAlamat" placeholder="Address Detail" required />
+					</form>
 				</>
 			</AddData>
 			{Auth.userData.role === "admin" ? (

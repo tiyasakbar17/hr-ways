@@ -19,7 +19,7 @@ function AddData({ title, children, actions, type, cancelAction, viewOnly }) {
 							<button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancelAction}>
 								Cancel
 							</button>
-							<button type="button" className="btn bg-primer" data-dismiss="modal" onClick={actions}>
+							<button type="submit" className="btn bg-primer" data-dismiss="modal" onClick={actions}>
 								Save
 							</button>
 						</div>
