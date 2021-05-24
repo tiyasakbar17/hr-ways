@@ -58,7 +58,7 @@ function UserPage() {
 		},
 		addUserHrHandler = (e) => {
 			e.preventDefault();
-			dispatch(addUser({ username: state.username, password: state.password }));
+			dispatch(addUser({ username: state.username, password: state.password, cabangId: state.cabangId }));
 			setstate(initialState);
 		},
 		options = {
