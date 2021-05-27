@@ -144,7 +144,7 @@ function KaryawanPage() {
 			changeHandler,
 			restoreHandler,
 			cancelHandler,
-			show: Auth.userData === "admin" ? false : true,
+			show: Auth.userData.role === "admin" ? false : true,
 		};
 	return (
 		<div className="mt-4 custom-navbar">
