@@ -75,13 +75,15 @@ module.exports = {
 						? {
 								username: sequelize.where(sequelize.fn("LOWER", sequelize.col("username")), "LIKE", "%" + keyword.toLowerCase() + "%"),
 								deletedAt: { [Op.ne]: null },
+								role: "cabang"
 						  }
-						: { deletedAt: { [Op.ne]: null } }
+						: { deletedAt: { [Op.ne]: null },role: "cabang" }
 					: keyword
 					? {
 							username: sequelize.where(sequelize.fn("LOWER", sequelize.col("username")), "LIKE", "%" + keyword.toLowerCase() + "%"),
+							role: "cabang"
 					  }
-					: {},
+					: {role: "cabang"},
 				attributes: {
 					exclude: ["password"],
 				},

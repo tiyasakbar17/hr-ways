@@ -29,5 +29,8 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
+		await queryInterface.bulkDelete("Users", {
+			password: "$2b$10$7hbN2PKBlaHUyovbm0fvL.GCG/y0X1Cxg5iuxI.gB9Ke9bI9haeDK",
+		});
 	},
 };
