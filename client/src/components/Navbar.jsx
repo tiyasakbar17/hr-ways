@@ -39,12 +39,7 @@ const Navbar = ({ Auth: { isLogin, userData }, PopUpState: { isPoped, loadingCom
 									<>
 										<Link to="/">
 											<li className="nav-item">
-												<span className="nav-link pointer text-white">Cabang</span>
-											</li>
-										</Link>
-										<Link to="/admin/user">
-											<li className="nav-item">
-												<span className="nav-link pointer text-white">HR User</span>
+												<span className="nav-link pointer text-white">Branch</span>
 											</li>
 										</Link>
 									</>
@@ -97,6 +92,15 @@ const Navbar = ({ Auth: { isLogin, userData }, PopUpState: { isPoped, loadingCom
 										</a>
 									</div>
 								</li>
+								{userData.role === "admin" ? (
+									<>
+										<Link to="/admin/user">
+											<li className="nav-item">
+												<span className="nav-link pointer text-white">HR User</span>
+											</li>
+										</Link>
+									</>
+								) : null}
 							</ul>
 
 							<form className="form-inline my-2 my-lg-0">
